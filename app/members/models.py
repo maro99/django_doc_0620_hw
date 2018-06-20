@@ -1,6 +1,7 @@
 from django.db import models
 
 
+
 class User(models.Model):
     name = models.CharField(max_length=50)
 
@@ -24,6 +25,16 @@ class User(models.Model):
     @property
     def block_list(self):
         return self.block_users.all()
+
+
+
+    @property
+    def comments(self):
+        return self.comment_set.all()
+
+    @property
+    def posts(self):
+        return self.post_set.all()
 
 
 class UserInfo(models.Model):
