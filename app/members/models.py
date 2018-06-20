@@ -16,6 +16,7 @@ class User(models.Model):
     def __str__(self):
         return f'name: {self.name}'
 
+    # str에서 다같이 출력하려면 애러가 난다. 배운대로 property로 따로 friends, block리스트 보는것 추가함.
     @property
     def friends_list(self):
         return self.friends.all()
