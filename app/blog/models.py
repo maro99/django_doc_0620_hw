@@ -14,10 +14,21 @@ class Post(models.Model):
     )
 
     title = models.CharField(max_length=150)
-
     content = models.CharField(max_length=500)
-
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'title: {self.title}, content: {self.content}, user: {self.user.name}, date: {self.created_at}'
+
+    @property
+    def like_users(self):
+
+        user_name_list = []
+
+        for postlike in self.postlike_set.all():
+            user_name_list.append(postlike.user.name)
+
+        return User.objects.filter(name__in = user_name_list)
 
 
 class PostLike(models.Model):
@@ -45,18 +56,21 @@ class Comment(models.Model):
 
     user = models.ForeignKey(
         User,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        # related_name= 'comments'
     )
 
     content = models.CharField(max_length=300, null=True,)
-
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'title: {self.post.title}, content: {self.content}, user: {self.user.name}, date: {self.created_at}'
 
 
 class CommentLike(models.Model):
 
     comment = models.ForeignKey(
-        Post,
+        Comment,
         on_delete=models.CASCADE,
     )
 
@@ -67,3 +81,5 @@ class CommentLike(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return f'comment: {self.comment}'
