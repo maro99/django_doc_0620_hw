@@ -67,6 +67,17 @@ class Comment(models.Model):
         return f'title: {self.post.title}, content: {self.content}, user: {self.user.name}, date: {self.created_at}'
 
 
+    @property
+    def like_users(self):
+
+        user_name_list = []
+
+        for commentlike in self.commentlike_set.all():
+            user_name_list.append(commentlike.user.name)
+
+        return User.objects.filter(name__in = user_name_list)
+
+
 class CommentLike(models.Model):
 
     comment = models.ForeignKey(
